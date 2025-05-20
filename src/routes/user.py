@@ -1,10 +1,6 @@
 from fastapi import APIRouter, Depends
-from pydantic import BaseModel
-
-class User(BaseModel):
-    username: str
-    email: str
-    password: str
+from utils.libs.schemas.users import User as UserSchema
+from utils.libs.db.repository import user_collection_instance
 
 routes = APIRouter(
 
@@ -12,18 +8,46 @@ routes = APIRouter(
     tags=["user"],
 )
 
-fake_users_db = {
-    "Bob": {"username": "Bob", "email": "Bob@email.com", "password": "Bob123"}
-}
 
 class UserRoute:
   
   @staticmethod
-  @routes.get("/", response_model=User)
+  @routes.get("/")
   async def read_user():
-    user_data = fake_users_db.get("Bob")
-    user = User(**user_data.copy())
-    return user
+   try:
+     users_data = user_collection_instance.find_many({})
+     if not users_data:
+       return {
+          "message":"No users found",
+          "status":404
+       }
+       
+     users = []
+     for user in users_data:
+        user["_id"] = str(user["_id"])
+        users.append(user)
+      
+      
+        
+        
+     print(users)
+    #  return_data = UserSchema(**user_dict)
+        
+     return {
+        "message":"Users fetch Successfully",
+        "status":200,
+        "data":users
+     }  
+       
+     
+   except Exception as e:
+     return {
+        "message":"Internal Server Error",
+        "status":500,
+        "error":str(e)  
+     }
+
+  
   
   
   
