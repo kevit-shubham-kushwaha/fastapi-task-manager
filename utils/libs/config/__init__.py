@@ -6,3 +6,6 @@ load_dotenv()
 MONGODB_URI = os.getenv("MONGODB_URI")
 MONGODB_DB = os.getenv("MONGODB_DB")
 MONGODB_COLLECTION = os.getenv("MONGODB_COLLECTION")
+
+PORT = os.getenv("PORT")
+HOST = os.getenv("HOST")
