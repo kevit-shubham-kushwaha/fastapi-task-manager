@@ -1,5 +1,5 @@
-from fastapi import APIRouter, Depends, Query, HTTPException
-from utils.libs.schemas.tasks import Task as TaskSchema , TaskResponse
+from fastapi import APIRouter
+from utils.libs.schemas.tasks import Task as TaskSchema 
 
 from utils.libs.db.repository import task_collection_instance
 
